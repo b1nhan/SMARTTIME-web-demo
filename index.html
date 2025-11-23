@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SMARTTIME - AI Study Companion</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#3B82F6', // Blue 500
+                        secondary: '#60A5FA', // Blue 400
+                        accent: '#EFF6FF', // Blue 50
+                        glass: 'rgba(255, 255, 255, 0.7)',
+                        glassBorder: 'rgba(255, 255, 255, 0.5)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 50%, #eff6ff 100%);
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Glassmorphism Classes */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 2px 10px rgba(59, 130, 246, 0.05);
+        }
+
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        /* Hide Scrollbar but keep functionality */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .page-transition {
+            animation: fadeIn 0.3s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center text-slate-800">
+
+    <!-- Mobile Container (Simulating a Phone) -->
+    <div class="relative w-full h-full max-w-md bg-white/30 shadow-2xl overflow-hidden flex flex-col md:rounded-[40px] md:h-[95vh] md:border-8 md:border-white">
+        
+        <!-- Top Status Bar Simulation -->
+        <div class="h-12 w-full flex justify-between items-center px-6 pt-2 z-20">
+            <span class="font-semibold text-sm">9:41</span>
+            <div class="flex space-x-2 text-xs">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- Header -->
+        <header class="px-6 pb-2 z-10 flex justify-between items-center">
+            <div>
+                <h1 id="page-title" class="text-2xl font-bold text-slate-800">Dashboard</h1>
+                <p id="page-subtitle" class="text-xs text-slate-500">Welcome back, An!</p>
+            </div>
+            <div class="relative">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-400 to-blue-200 flex items-center justify-center text-white font-bold shadow-lg ring-2 ring-white">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=An&backgroundColor=b6e3f4" alt="Avatar" class="w-full h-full rounded-full">
+                </div>
+                <div class="absolute -bottom-1 -right-1 bg-green-400 w-3 h-3 rounded-full border-2 border-white"></div>
+            </div>
+        </header>
+
+        <!-- Main Content Area (Scrollable) -->
+        <main class="flex-1 overflow-y-auto hide-scrollbar pb-24 px-4 pt-2 relative">
+            
+            <!-- PAGE: HOME (DASHBOARD) -->
+            <div id="home-page" class="page-content page-transition space-y-4">
+                
+                <!-- Stats Row -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="glass-card p-4 flex flex-col items-start relative overflow-hidden group">
+                        <div class="absolute right-0 top-0 p-2 opacity-10 group-hover:opacity-20 transition">
+                            <i class="fas fa-clock text-4xl text-blue-600"></i>
+                        </div>
+                        <span class="text-xs text-slate-500 font-medium">Focus Today</span>
+                        <div class="flex items-baseline mt-1">
+                            <span class="text-2xl font-bold text-blue-600">4h 30m</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-1.5 mt-2">
+                            <div class="bg-blue-500 h-1.5 rounded-full" style="width: 75%"></div>
+                        </div>
+                    </div>
+                    <div class="glass-card p-4 flex flex-col items-start relative overflow-hidden">
+                        <div class="absolute right-0 top-0 p-2 opacity-10">
+                            <i class="fas fa-bolt text-4xl text-yellow-500"></i>
+                        </div>
+                        <span class="text-xs text-slate-500 font-medium">Current Energy</span>
+                        <div class="flex items-baseline mt-1">
+                            <span class="text-2xl font-bold text-yellow-500">76%</span>
+                            <i class="fas fa-arrow-up text-xs ml-1 text-green-500"></i>
+                        </div>
+                        <p class="text-[10px] text-slate-400 mt-1">Sẵn sàng học tập</p>
+                    </div>
+                </div>
+
+                <!-- AI Insight Card -->
+                <div class="glass-card p-5 border-l-4 border-blue-500 bg-gradient-to-r from-white to-blue-50">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i class="fas fa-sparkles text-blue-500 animate-pulse"></i>
+                        <h3 class="font-bold text-sm text-slate-700">AI Insight</h3>
+                    </div>
+                    <p class="text-sm text-slate-600 leading-relaxed">
+                        Bạn học tốt nhất lúc <span class="font-bold text-blue-600">19:00 – 21:00</span> (Golden Hour). Hãy dành thời gian này cho các môn khó như Toán cao cấp.
+                    </p>
+                </div>
+
+                <!-- Weekly Progress -->
+                <div class="glass-card p-4">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-bold text-sm text-slate-700">Mục tiêu tuần</h3>
+                        <span class="text-xs font-bold text-blue-600 bg-blue-100 px-2 py-1 rounded-full">Tuần 4</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="relative w-12 h-12 flex-shrink-0">
+                            <svg class="w-full h-full transform -rotate-90">
+                                <circle cx="24" cy="24" r="20" stroke="#e2e8f0" stroke-width="4" fill="transparent" />
+                                <circle cx="24" cy="24" r="20" stroke="#3b82f6" stroke-width="4" fill="transparent" stroke-dasharray="125.6" stroke-dashoffset="37.68" />
+                            </svg>
+                            <span class="absolute inset-0 flex items-center justify-center text-xs font-bold">70%</span>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-500">Đã hoàn thành 12/15 tasks</p>
+                            <p class="text-xs text-slate-500">Tiến độ tốt, hãy duy trì!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Energy Chart (Simple CSS Visual) -->
+                <div class="glass-card p-4">
+                    <h3 class="font-bold text-sm text-slate-700 mb-3">Energy Flow Today</h3>
+                    <div class="h-24 flex items-end justify-between gap-1 px-1">
+                        <!-- Bars simulating the chart -->
+                        <div class="w-1/12 bg-blue-200 rounded-t h-[40%]"></div>
+                        <div class="w-1/12 bg-blue-200 rounded-t h-[50%]"></div>
+                        <div class="w-1/12 bg-blue-300 rounded-t h-[60%]"></div>
+                        <div class="w-1/12 bg-blue-400 rounded-t h-[80%]"></div>
+                        <div class="w-1/12 bg-blue-500 rounded-t h-[90%] relative group">
+                            <!-- Tooltip -->
+                            <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">Now</div>
+                        </div>
+                        <div class="w-1/12 bg-blue-400 rounded-t h-[70%]"></div>
+                        <div class="w-1/12 bg-blue-300 rounded-t h-[60%]"></div>
+                        <div class="w-1/12 bg-blue-200 rounded-t h-[40%]"></div>
+                    </div>
+                    <div class="flex justify-between text-[10px] text-slate-400 mt-1">
+                        <span>9AM</span>
+                        <span>12PM</span>
+                        <span>3PM</span>
+                        <span>6PM</span>
+                        <span>9PM</span>
+                    </div>
+                </div>
+
+                <!-- Mini Leaderboard -->
+                <div class="glass-card p-4 mb-4">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-bold text-sm text-slate-700">Top Teams</h3>
+                        <a href="#" onclick="switchTab('profile')" class="text-xs text-blue-500">Xem tất cả</a>
+                    </div>
+                    <div class="space-y-3">
+                        <!-- Rank 1 -->
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <span class="text-yellow-500 font-bold text-sm w-4">1</span>
+                                <div class="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center text-red-500 text-xs font-bold">
+                                    <i class="fas fa-fire"></i>
+                                </div>
+                                <span class="text-sm font-medium">Team Phoenix</span>
+                            </div>
+                            <span class="text-xs font-bold text-slate-600">1230 XP</span>
+                        </div>
+                        <!-- Rank 2 -->
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <span class="text-slate-400 font-bold text-sm w-4">2</span>
+                                <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-500 text-xs font-bold">L</div>
+                                <span class="text-sm font-medium">Team Lanissa</span>
+                            </div>
+                            <span class="text-xs font-bold text-slate-600">1120 XP</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE: ENERGY -->
+            <div id="energy-page" class="page-content hidden page-transition space-y-6 flex flex-col items-center pt-4">
+                <div class="text-center space-y-2">
+                    <h2 class="text-xl font-bold text-slate-700">Bạn đang cảm thấy thế nào?</h2>
+                    <p class="text-sm text-slate-500">Chọn mood để AI tối ưu hóa lộ trình học</p>
+                </div>
+
+                <!-- Mood Selector -->
+                <div class="flex justify-between w-full px-2">
+                    <button onclick="selectMood('great')" class="mood-btn flex flex-col items-center gap-2 group transition focus:outline-none">
+                        <div class="w-14 h-14 rounded-full bg-yellow-100 flex items-center justify-center text-3xl shadow-sm group-hover:scale-110 group-focus:ring-2 ring-yellow-400 transition">😄</div>
+                        <span class="text-xs font-medium text-slate-600">Tuyệt</span>
+                    </button>
+                    <button onclick="selectMood('fine')" class="mood-btn flex flex-col items-center gap-2 group transition focus:outline-none">
+                        <div class="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center text-3xl shadow-sm group-hover:scale-110 group-focus:ring-2 ring-blue-400 transition">🙂</div>
+                        <span class="text-xs font-medium text-slate-600">Ổn</span>
+                    </button>
+                    <button onclick="selectMood('tired')" class="mood-btn flex flex-col items-center gap-2 group transition focus:outline-none">
+                        <div class="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center text-3xl shadow-sm group-hover:scale-110 group-focus:ring-2 ring-gray-400 transition">😐</div>
+                        <span class="text-xs font-medium text-slate-600">Hơi mệt</span>
+                    </button>
+                    <button onclick="selectMood('stress')" class="mood-btn flex flex-col items-center gap-2 group transition focus:outline-none">
+                        <div class="w-14 h-14 rounded-full bg-red-100 flex items-center justify-center text-3xl shadow-sm group-hover:scale-110 group-focus:ring-2 ring-red-400 transition">😩</div>
+                        <span class="text-xs font-medium text-slate-600">Stress</span>
+                    </button>
+                </div>
+
+                <!-- Dynamic AI Suggestion -->
+                <div id="mood-suggestion" class="w-full glass-card p-6 border-t-4 border-yellow-400 shadow-lg transform transition-all duration-300">
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="bg-yellow-400 text-white p-1.5 rounded-lg">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-700">AI Suggestion</h3>
+                    </div>
+                    <p id="suggestion-text" class="text-sm text-slate-600 mb-4">
+                        Hôm nay năng lượng đang thấp. Gợi ý học <span class="font-bold">25-40 phút</span> các môn nhẹ nhàng.
+                    </p>
+                    <button onclick="switchTab('focus')" class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold shadow-lg shadow-blue-300/50 transition flex items-center justify-center gap-2">
+                        <span>Bắt đầu Focus</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+                
+                <!-- Extra Chart -->
+                <div class="w-full glass-card p-4 mt-4">
+                    <h3 class="font-bold text-sm text-slate-700 mb-2">Biểu đồ cảm xúc tuần</h3>
+                    <div class="h-32 bg-blue-50/50 rounded-lg flex items-center justify-center text-slate-400 text-xs">
+                        [Biểu đồ đường đang được render...]
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE: FOCUS -->
+            <div id="focus-page" class="page-content hidden page-transition flex flex-col h-full pt-4">
+                
+                <!-- Timer Circle -->
+                <div class="flex-1 flex flex-col items-center justify-center mb-6">
+                    <div class="relative w-64 h-64">
+                        <!-- Background Circle -->
+                        <svg class="w-full h-full transform -rotate-90">
+                            <circle cx="128" cy="128" r="120" stroke="#eff6ff" stroke-width="8" fill="white" class="shadow-inner" />
+                            <circle id="timer-progress" cx="128" cy="128" r="120" stroke="#3b82f6" stroke-width="8" fill="transparent" stroke-dasharray="753.6" stroke-dashoffset="0" stroke-linecap="round" class="transition-all duration-1000 ease-linear" />
+                        </svg>
+                        
+                        <!-- Time Display -->
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span class="text-slate-400 text-sm font-medium mb-1">Pomodoro</span>
+                            <span id="timer-display" class="text-6xl font-bold text-slate-700 tracking-tighter">25:00</span>
+                            <span class="text-blue-500 text-sm font-medium mt-2 bg-blue-50 px-3 py-1 rounded-full">Task: Ôn tập Toán</span>
+                        </div>
+                    </div>
+
+                    <!-- Controls -->
+                    <div class="flex items-center gap-6 mt-8">
+                        <button class="w-12 h-12 rounded-full bg-white text-slate-400 shadow hover:text-red-500 transition flex items-center justify-center">
+                            <i class="fas fa-undo"></i>
+                        </button>
+                        <button id="start-btn" onclick="toggleTimer()" class="w-20 h-20 rounded-full bg-blue-600 text-white shadow-xl shadow-blue-400/40 hover:scale-105 transition flex items-center justify-center text-2xl">
+                            <i class="fas fa-play ml-1"></i>
+                        </button>
+                        <button class="w-12 h-12 rounded-full bg-white text-slate-400 shadow hover:text-blue-500 transition flex items-center justify-center">
+                            <i class="fas fa-music"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Todo List -->
+                <div class="glass-card p-4 mb-20">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-bold text-sm text-slate-700">Tasks hôm nay</h3>
+                        <button class="text-blue-500 text-xs"><i class="fas fa-plus"></i> Thêm</button>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex items-center p-3 bg-white/60 rounded-lg border border-white/50">
+                            <input type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
+                            <div class="ml-3 flex-1">
+                                <p class="text-sm font-medium text-slate-700">Ôn lại Cấu trúc dữ liệu</p>
+                                <span class="text-[10px] text-orange-500 bg-orange-50 px-1.5 py-0.5 rounded">High Priority</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-3 bg-white/60 rounded-lg border border-white/50 opacity-60">
+                            <input type="checkbox" checked class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
+                            <div class="ml-3 flex-1">
+                                <p class="text-sm font-medium text-slate-700 line-through">Nộp bài tập Tiếng Anh</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE: CIRCLE (TEAM) -->
+            <div id="circle-page" class="page-content hidden page-transition pt-4 space-y-4">
+                <div class="glass-card p-5 bg-gradient-to-br from-indigo-50 to-blue-50">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h2 class="font-bold text-lg text-slate-800">Team Phoenix 🔥</h2>
+                            <p class="text-xs text-slate-500">5 thành viên đang online</p>
+                        </div>
+                        <span class="bg-green-100 text-green-600 text-xs font-bold px-2 py-1 rounded-full animate-pulse">Live</span>
+                    </div>
+
+                    <!-- Group Timer -->
+                    <div class="flex items-center justify-center py-4 relative">
+                         <!-- Simplified Group Timer Visual -->
+                         <div class="w-40 h-40 rounded-full border-4 border-indigo-200 flex flex-col items-center justify-center bg-white shadow-inner">
+                            <span class="text-3xl font-bold text-indigo-600">45:00</span>
+                            <span class="text-xs text-slate-400">Group Focus</span>
+                         </div>
+                         <!-- Decorative Avatars around -->
+                         <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=1" class="w-8 h-8 rounded-full absolute top-0 left-10 border-2 border-white">
+                         <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=2" class="w-8 h-8 rounded-full absolute bottom-2 right-8 border-2 border-white">
+                    </div>
+                    
+                    <button class="w-full py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-semibold shadow-md mt-2">
+                        Tham gia Session
+                    </button>
+                </div>
+
+                <!-- Team Energy -->
+                <div class="glass-card p-4 flex items-center justify-between">
+                    <div>
+                        <h3 class="text-sm font-bold text-slate-700">Năng lượng Team</h3>
+                        <p class="text-xs text-slate-500">Trung bình hiện tại</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-bolt text-yellow-500"></i>
+                        <span class="text-xl font-bold text-slate-700">82%</span>
+                    </div>
+                </div>
+
+                <!-- Members List -->
+                <div class="glass-card p-4">
+                    <h3 class="text-sm font-bold text-slate-700 mb-3">Thành viên (5/6)</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="relative">
+                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=An" class="w-10 h-10 rounded-full bg-blue-100">
+                                    <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-white rounded-full"></div>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold">Bạn (An)</p>
+                                    <p class="text-xs text-blue-500">Đang học: Toán</p>
+                                </div>
+                            </div>
+                            <span class="text-xs font-bold text-slate-400">⚡ 76%</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="relative">
+                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Linh" class="w-10 h-10 rounded-full bg-pink-100">
+                                    <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 border-2 border-white rounded-full"></div>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold">Linh Bui</p>
+                                    <p class="text-xs text-slate-500">Đang học: Anh văn</p>
+                                </div>
+                            </div>
+                            <span class="text-xs font-bold text-slate-400">⚡ 88%</span>
+                        </div>
+                         <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="relative">
+                                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Hoang" class="w-10 h-10 rounded-full bg-green-100">
+                                    <div class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-yellow-500 border-2 border-white rounded-full"></div>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-semibold">Hoàng Phạm</p>
+                                    <p class="text-xs text-slate-500">Đang nghỉ giải lao</p>
+                                </div>
+                            </div>
+                            <span class="text-xs font-bold text-slate-400">⚡ 60%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAGE: PROFILE -->
+            <div id="profile-page" class="page-content hidden page-transition pt-4 pb-20 space-y-5">
+                
+                <!-- Header Info -->
+                <div class="text-center">
+                    <div class="w-24 h-24 mx-auto rounded-full bg-gradient-to-tr from-blue-400 to-blue-200 p-1 mb-3 shadow-xl">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=An&backgroundColor=b6e3f4" class="w-full h-full rounded-full border-4 border-white">
+                    </div>
+                    <h2 class="text-xl font-bold text-slate-800">An Nguyen</h2>
+                    <p class="text-sm text-slate-500">Student @ University</p>
+                    
+                    <!-- Level Bar -->
+                    <div class="mt-3 max-w-[200px] mx-auto">
+                        <div class="flex justify-between text-xs mb-1 font-bold text-blue-600">
+                            <span>Level 3</span>
+                            <span>1240/1800 XP</span>
+                        </div>
+                        <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-blue-400 to-blue-600 w-[68%]"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Badges Grid -->
+                <div class="glass-card p-5">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-slate-700">Thành tựu</h3>
+                        <i class="fas fa-trophy text-yellow-500"></i>
+                    </div>
+                    <div class="grid grid-cols-3 gap-3 text-center">
+                        <div class="flex flex-col items-center gap-1">
+                            <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center text-xl shadow-sm">🔥</div>
+                            <span class="text-[10px] font-medium leading-tight text-slate-600">7-Day<br>Streak</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-xl shadow-sm">🧠</div>
+                            <span class="text-[10px] font-medium leading-tight text-slate-600">Golden<br>Learner</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-xl shadow-sm">📚</div>
+                            <span class="text-[10px] font-medium leading-tight text-slate-600">All<br>Tasks</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1 opacity-50 grayscale">
+                            <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-xl">👥</div>
+                            <span class="text-[10px] font-medium leading-tight text-slate-500">Team<br>Player</span>
+                        </div>
+                         <div class="flex flex-col items-center gap-1 opacity-50 grayscale">
+                            <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-xl">⭐</div>
+                            <span class="text-[10px] font-medium leading-tight text-slate-500">Weekly<br>Master</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Full Leaderboard -->
+                <div class="glass-card p-4">
+                    <h3 class="font-bold text-slate-700 mb-4">Bảng xếp hạng Team (Tuần)</h3>
+                    <div class="space-y-4">
+                        <!-- Top 1 -->
+                        <div class="flex items-center justify-between p-2 bg-yellow-50 rounded-lg border border-yellow-100">
+                            <div class="flex items-center gap-3">
+                                <span class="text-yellow-600 font-black text-lg w-4">1</span>
+                                <div class="w-9 h-9 rounded-full bg-white flex items-center justify-center shadow-sm text-lg">🔥</div>
+                                <div>
+                                    <p class="text-sm font-bold text-slate-800">Team Phoenix</p>
+                                    <p class="text-[10px] text-slate-500">Vô địch tuần trước</p>
+                                </div>
+                            </div>
+                            <span class="text-sm font-bold text-blue-600">1230 XP</span>
+                        </div>
+                        <!-- Top 2 -->
+                         <div class="flex items-center justify-between px-2">
+                            <div class="flex items-center gap-3">
+                                <span class="text-slate-400 font-bold text-lg w-4">2</span>
+                                <div class="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold">L</div>
+                                <span class="text-sm font-medium">Team Lanissa</span>
+                            </div>
+                            <span class="text-sm font-bold text-slate-600">1120 XP</span>
+                        </div>
+                        <!-- Top 3 -->
+                        <div class="flex items-center justify-between px-2">
+                            <div class="flex items-center gap-3">
+                                <span class="text-amber-700 font-bold text-lg w-4">3</span>
+                                <div class="w-9 h-9 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold">C</div>
+                                <span class="text-sm font-medium">Team Coliuer</span>
+                            </div>
+                            <span class="text-sm font-bold text-slate-600">860 XP</span>
+                        </div>
+                         <!-- Top 4 -->
+                        <div class="flex items-center justify-between px-2 opacity-80">
+                            <div class="flex items-center gap-3">
+                                <span class="text-slate-400 font-medium text-lg w-4">4</span>
+                                <div class="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 font-bold">D</div>
+                                <span class="text-sm font-medium">Team Delta</span>
+                            </div>
+                            <span class="text-sm font-bold text-slate-600">780 XP</span>
+                        </div>
+                         <!-- Top 5 -->
+                        <div class="flex items-center justify-between px-2 opacity-80">
+                            <div class="flex items-center gap-3">
+                                <span class="text-slate-400 font-medium text-lg w-4">5</span>
+                                <div class="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 font-bold">S</div>
+                                <span class="text-sm font-medium">Team Sigma</span>
+                            </div>
+                            <span class="text-sm font-bold text-slate-600">760 XP</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Spacer for Nav -->
+            <div class="h-20"></div>
+        </main>
+
+        <!-- Chat Bubble (Fixed) -->
+        <div class="absolute bottom-24 right-5 z-40">
+            <button onclick="toggleChat()" class="w-12 h-12 bg-white rounded-full shadow-lg border border-blue-100 flex items-center justify-center text-blue-500 animate-float hover:scale-110 transition">
+                <i class="fas fa-comment-dots text-xl"></i>
+            </button>
+            <!-- Chat Popup -->
+            <div id="chat-popup" class="hidden absolute bottom-14 right-0 w-64 bg-white rounded-2xl shadow-2xl p-3 border border-gray-100 origin-bottom-right transition-all">
+                <div class="flex items-center gap-2 mb-2 border-b pb-2">
+                    <div class="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs"><i class="fas fa-robot"></i></div>
+                    <span class="text-xs font-bold text-slate-700">AI Time Coach</span>
+                </div>
+                <div class="space-y-2 text-[11px] text-slate-600 mb-2">
+                    <p class="bg-gray-100 p-2 rounded-lg rounded-tl-none">Chào An, bạn cần giúp gì không?</p>
+                </div>
+                <input type="text" placeholder="Hỏi AI..." class="w-full text-xs p-2 bg-gray-50 rounded-lg border-none focus:ring-1 focus:ring-blue-300 outline-none">
+            </div>
+        </div>
+
+        <!-- Bottom Navigation Bar -->
+        <nav class="absolute bottom-0 w-full glass-nav px-6 py-4 flex justify-between items-center z-50 rounded-t-3xl">
+            <button onclick="switchTab('home')" class="nav-item active flex flex-col items-center gap-1 text-blue-600 transition" data-target="home">
+                <i class="fas fa-home text-xl"></i>
+                <span class="text-[10px] font-medium">Home</span>
+            </button>
+            <button onclick="switchTab('energy')" class="nav-item flex flex-col items-center gap-1 text-slate-400 hover:text-blue-500 transition" data-target="energy">
+                <i class="fas fa-bolt text-xl"></i>
+                <span class="text-[10px] font-medium">Energy</span>
+            </button>
+            <div class="relative -top-6">
+                <button onclick="switchTab('focus')" class="w-14 h-14 rounded-full bg-blue-600 text-white shadow-lg shadow-blue-400/50 flex items-center justify-center text-2xl hover:scale-110 transition" data-target="focus">
+                    <i class="fas fa-play ml-1"></i>
+                </button>
+            </div>
+            <button onclick="switchTab('circle')" class="nav-item flex flex-col items-center gap-1 text-slate-400 hover:text-blue-500 transition" data-target="circle">
+                <i class="fas fa-users text-xl"></i>
+                <span class="text-[10px] font-medium">Circle</span>
+            </button>
+            <button onclick="switchTab('profile')" class="nav-item flex flex-col items-center gap-1 text-slate-400 hover:text-blue-500 transition" data-target="profile">
+                <i class="fas fa-user text-xl"></i>
+                <span class="text-[10px] font-medium">Profile</span>
+            </button>
+        </nav>
+
+    </div>
+
+    <!-- Logic Script -->
+    <script>
+        // State
+        let currentTab = 'home';
+        let timerInterval;
+        let isTimerRunning = false;
+        let timeLeft = 25 * 60; // 25 minutes
+        const TOTAL_TIME = 25 * 60;
+        const CIRCUMFERENCE = 753.6; // 2 * PI * 120
+
+        // Mock Data for Moods
+        const MOOD_INSIGHTS = {
+            'great': { text: "Tuyệt vời! Bạn đang ở trạng thái đỉnh cao. Gợi ý học 60-90 phút các môn khó.", color: "text-green-600", border: "border-green-400", icon: "bg-green-400" },
+            'fine': { text: "Tinh thần ổn định. Hãy duy trì nhịp độ với session 40-50 phút.", color: "text-blue-600", border: "border-blue-400", icon: "bg-blue-400" },
+            'tired': { text: "Hôm nay năng lượng hơi thấp. Gợi ý học 25-40 phút nhẹ nhàng.", color: "text-yellow-600", border: "border-yellow-400", icon: "bg-yellow-400" },
+            'stress': { text: "Bạn đang căng thẳng. Hãy thử bài tập thở 5 phút trước khi học ngắn 20 phút.", color: "text-red-600", border: "border-red-400", icon: "bg-red-400" }
+        };
+
+        // Switch Tab Logic
+        function switchTab(tabId) {
+            // Update Content
+            document.querySelectorAll('.page-content').forEach(el => {
+                el.classList.add('hidden');
+            });
+            document.getElementById(`${tabId}-page`).classList.remove('hidden');
+
+            // Update Header Title
+            const titles = {
+                'home': 'Dashboard',
+                'energy': 'Energy Check-in',
+                'focus': 'Focus Session',
+                'circle': 'Study Circle',
+                'profile': 'My Profile'
+            };
+            document.getElementById('page-title').innerText = titles[tabId];
+
+            // Update Nav Icons
+            document.querySelectorAll('.nav-item').forEach(btn => {
+                if(btn.dataset.target === tabId) {
+                    btn.classList.add('text-blue-600');
+                    btn.classList.remove('text-slate-400');
+                } else {
+                    btn.classList.remove('text-blue-600');
+                    btn.classList.add('text-slate-400');
+                }
+            });
+            
+            // Special case for Focus Button in center
+            const focusBtn = document.querySelector('button[data-target="focus"]');
+            if(tabId === 'focus') {
+                focusBtn.classList.add('ring-4', 'ring-blue-200');
+            } else {
+                focusBtn.classList.remove('ring-4', 'ring-blue-200');
+            }
+
+            currentTab = tabId;
+        }
+
+        // Mood Selection Logic
+        function selectMood(mood) {
+            const insight = MOOD_INSIGHTS[mood] || MOOD_INSIGHTS['tired'];
+            const container = document.getElementById('mood-suggestion');
+            const text = document.getElementById('suggestion-text');
+            const iconBg = container.querySelector('.fa-lightbulb').parentElement;
+
+            // Animate out
+            container.classList.add('opacity-50', 'scale-95');
+            
+            setTimeout(() => {
+                // Update Data
+                text.innerHTML = insight.text;
+                container.className = `w-full glass-card p-6 border-t-4 shadow-lg transform transition-all duration-300 ${insight.border}`;
+                iconBg.className = `${insight.icon} text-white p-1.5 rounded-lg`;
+                
+                // Animate in
+                container.classList.remove('opacity-50', 'scale-95');
+            }, 200);
+
+            // Highlight selected button
+            document.querySelectorAll('.mood-btn div').forEach(div => div.classList.remove('ring-4', 'ring-offset-2'));
+            event.currentTarget.querySelector('div').classList.add('ring-4', 'ring-offset-2');
+        }
+
+        // Timer Logic
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timer-display').innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Update Circle Progress
+            const progress = timeLeft / TOTAL_TIME;
+            const dashoffset = CIRCUMFERENCE * (1 - progress);
+            document.getElementById('timer-progress').style.strokeDashoffset = dashoffset;
+        }
+
+        function toggleTimer() {
+            const btn = document.getElementById('start-btn');
+            const icon = btn.querySelector('i');
+
+            if (isTimerRunning) {
+                // Pause
+                clearInterval(timerInterval);
+                isTimerRunning = false;
+                btn.classList.remove('bg-yellow-500');
+                btn.classList.add('bg-blue-600');
+                icon.className = 'fas fa-play ml-1';
+            } else {
+                // Start
+                isTimerRunning = true;
+                btn.classList.remove('bg-blue-600');
+                btn.classList.add('bg-yellow-500');
+                icon.className = 'fas fa-pause';
+                
+                timerInterval = setInterval(() => {
+                    if (timeLeft > 0) {
+                        timeLeft--;
+                        updateTimerDisplay();
+                    } else {
+                        // Finished
+                        clearInterval(timerInterval);
+                        isTimerRunning = false;
+                        alert("Focus Session Complete! +30 XP");
+                        timeLeft = TOTAL_TIME;
+                        updateTimerDisplay();
+                        btn.classList.remove('bg-yellow-500');
+                        btn.classList.add('bg-blue-600');
+                        icon.className = 'fas fa-play ml-1';
+                    }
+                }, 1000);
+            }
+        }
+
+        // Chat Toggle
+        function toggleChat() {
+            const popup = document.getElementById('chat-popup');
+            if (popup.classList.contains('hidden')) {
+                popup.classList.remove('hidden');
+            } else {
+                popup.classList.add('hidden');
+            }
+        }
+
+        // Initialize
+        updateTimerDisplay();
+
+    </script>
+</body>
+</html>
