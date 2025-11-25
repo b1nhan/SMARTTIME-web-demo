@@ -555,16 +555,52 @@
             <button onclick="toggleChat()" class="w-12 h-12 bg-white rounded-full shadow-lg border border-blue-100 flex items-center justify-center text-blue-500 animate-float hover:scale-110 transition">
                 <i class="fas fa-comment-dots text-xl"></i>
             </button>
-            <!-- Chat Popup -->
+
             <div id="chat-popup" class="hidden absolute bottom-14 right-0 w-64 bg-white rounded-2xl shadow-2xl p-3 border border-gray-100 origin-bottom-right transition-all">
                 <div class="flex items-center gap-2 mb-2 border-b pb-2">
                     <div class="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-white text-xs"><i class="fas fa-robot"></i></div>
-                    <span class="text-xs font-bold text-slate-700">AI Time Coach</span>
+                    <span class="text-xs font-bold text-slate-700">SMARTTIME AI</span>
                 </div>
-                <div class="space-y-2 text-[11px] text-slate-600 mb-2">
-                    <p class="bg-gray-100 p-2 rounded-lg rounded-tl-none">Chào An, bạn cần giúp gì không?</p>
+
+                <div id="chat-content" class="flex flex-col space-y-2 text-[11px] text-slate-600 mb-2 overflow-y-auto max-h-[300px]">
+                    
+                    <p class="bg-gray-100 p-2 rounded-lg rounded-bl-none self-start w-fit max-w-[85%]">
+                        Chào An, bạn cần giúp gì không?
+                    </p>
+                    
+                    <p class="bg-blue-100 p-2 rounded-lg rounded-br-none self-end w-fit max-w-[85%]">
+                        Tôi có lịch trống vào 4 giờ chiều nay và muốn sắp xếp lại thời gian.
+                    </p>
+                    
+                    <p class="bg-gray-100 p-2 rounded-lg rounded-bl-none self-start w-fit max-w-[85%]">
+                        Okay. Mục tiêu chính trong chiều nay của bạn là gì?
+                    </p>
+                    
+                    <p class="bg-blue-100 p-2 rounded-lg rounded-br-none self-end w-fit max-w-[85%]">
+                        Tôi cần ôn 2 chương môn Cơ sở dữ liệu và hoàn thành 30% bài tập thực hành.
+                    </p>
+                    
+                    <p class="bg-gray-100 p-2 rounded-lg rounded-bl-none self-start w-fit max-w-[85%]">
+                        Gợi ý lịch làm việc:<br>
+                        - 90 phút ôn lý thuyết<br>
+                        - 15 phút nghỉ<br>
+                        - 90 phút làm bài tập thực hành<br>
+                        - 30 phút review
+                    </p>
+                    
+                    <button onclick="addChat('remind')" class="w-fit max-w-[85%] px-2 py-2 bg-green-100 hover:bg-green-200 text-green-600 rounded-xl font-semibold transition flex items-center justify-center gap-2">
+                        <span>Đặt lịch nhắc nhở</span>
+                    </button>
+                    <button onclick="addChat('focus')" class="w-fit max-w-[85%] px-2 py-2 bg-orange-100 hover:bg-orange-200 text-orange-600 rounded-xl font-semibold transition flex items-center justify-center gap-2">
+                        <span>Gợi ý kỹ thuật tập trung</span>
+                    </button>
+                    <button onclick="addChat('adjust')" class="w-fit max-w-[85%] px-2 py-2 bg-blue-100 hover:bg-blue-200 text-blue-600 rounded-xl font-semibold transition flex items-center justify-center gap-2">
+                        <span>Điều chỉnh lại</span>
+                    </button>
+
                 </div>
-                <input type="text" placeholder="Hỏi AI..." class="w-full text-xs p-2 bg-gray-50 rounded-lg border-none focus:ring-1 focus:ring-blue-300 outline-none">
+                
+                <input type="text" placeholder="Chat..." class="w-full text-xs p-2 bg-gray-50 rounded-lg border-none focus:ring-1 focus:ring-blue-300 outline-none">
             </div>
         </div>
 
@@ -604,6 +640,37 @@
         let timeLeft = 25 * 60; // 25 minutes
         const TOTAL_TIME = 25 * 60;
         const CIRCUMFERENCE = 753.6; // 2 * PI * 120
+
+        const chatContent = document.getElementById('chat-content');
+        function addChat(message){
+            const newAsk = document.createElement("p");
+            const newReply = document.createElement("p");
+            newAsk.className = 'bg-blue-100 p-2 rounded-lg rounded-br-none self-end w-fit max-w-[85%]';
+            newReply.className = 'bg-gray-100 p-2 rounded-lg rounded-bl-none self-start w-fit max-w-[85%]';
+            if (message === 'remind' ){
+                newAsk.textContent='Đặt lịch nhắc nhở';
+                newReply.textContent='Tôi sẽ gửi thông báo nhắc nhở trước khi phiên làm việc bắt đầu và khi kết thúc!';
+            }
+            else if (message==='focus'){
+                newAsk.textContent='Gợi ý kỹ thuật tập trung';
+                newReply.textContent='Dựa vào mức năng lượng hôm nay, bạn có thể áp dụng pomodoro 30-5, nghỉ 25 phút mỗi 3 session. Trong thời gian làm việc, tôi sẽ tắt thông báo để tránh xao nhãng. Bạn có muốn thay đổi gì không?';
+            }
+            else if (message==='adjust'){
+                newAsk.textContent='Điều chỉnh lại';
+                newReply.innerHTML=`
+                Có thể chỉnh lại thành:<br>
+                    - Bắt đầu với 60 phút làm bài tập thực hành<br>
+                    - Sau đó nghỉ 10 phút và hoàn thành phần ôn lý thuyết<br>
+                Bạn thấy ổn chứ?`;
+            }
+            else{
+                return;
+            }
+            chatContent.appendChild(newAsk);
+            setTimeout(()=>{
+                chatContent.appendChild(newReply);
+            },2500);
+        }
 
         // Mock Data for Moods
         const MOOD_INSIGHTS = {
