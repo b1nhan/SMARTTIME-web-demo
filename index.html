@@ -157,7 +157,7 @@
                         <h3 class="font-bold text-sm text-slate-700">AI Insight</h3>
                     </div>
                     <p class="text-sm text-slate-600 leading-relaxed">
-                        Bạn học tốt nhất lúc <span class="font-bold text-blue-600">19:00 – 21:00</span> (Golden Hour). Hãy dành thời gian này cho các môn khó như Toán cao cấp.
+                        Bạn học tốt nhất lúc <span class="font-bold text-blue-600">19:00 – 21:00</span> (Golden Hour). Hãy dành thời gian này cho các môn khó như <strong>Cấu trúc dữ liệu và giải thuật</strong>.
                     </p>
                 </div>
 
@@ -187,25 +187,92 @@
                     <h3 class="font-bold text-sm text-slate-700 mb-3">Energy Flow Today</h3>
                     <div class="h-24 flex items-end justify-between gap-1 px-1">
                         <!-- Bars simulating the chart -->
-                        <div class="w-1/12 bg-blue-200 rounded-t h-[40%]"></div>
-                        <div class="w-1/12 bg-blue-200 rounded-t h-[50%]"></div>
-                        <div class="w-1/12 bg-blue-300 rounded-t h-[60%]"></div>
-                        <div class="w-1/12 bg-blue-400 rounded-t h-[80%]"></div>
+                        <div class="w-1/12 bg-blue-300 rounded-t h-[50%]"></div>
+                        <div class="w-1/12 bg-blue-400 rounded-t h-[70%]"></div>
                         <div class="w-1/12 bg-blue-500 rounded-t h-[90%] relative group">
                             <!-- Tooltip -->
                             <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">Now</div>
                         </div>
-                        <div class="w-1/12 bg-blue-400 rounded-t h-[70%]"></div>
-                        <div class="w-1/12 bg-blue-300 rounded-t h-[60%]"></div>
-                        <div class="w-1/12 bg-blue-200 rounded-t h-[40%]"></div>
+                        <div class="w-1/12 bg-gray-200 rounded-t h-[5%]"></div>
+                        <div class="w-1/12 bg-gray-200 rounded-t h-[5%]"></div>
+                        <div class="w-1/12 bg-gray-200 rounded-t h-[5%]"></div>
+                        <div class="w-1/12 bg-gray-200 rounded-t h-[5%]"></div>
+                        <div class="w-1/12 bg-gray-200 rounded-t h-[5%]"></div>
                     </div>
                     <div class="flex justify-between text-[10px] text-slate-400 mt-1">
+                        <span>5AM</span>
+                        <span>7AM</span>
                         <span>9AM</span>
-                        <span>12PM</span>
-                        <span>3PM</span>
-                        <span>6PM</span>
-                        <span>9PM</span>
+                        <span>11PM</span>
+                        <span>13PM</span>
+                        <span>15PM</span>
+                        <span>17PM</span>
+                        <span>19PM</span>
+                        <span>21PM</span>
                     </div>
+                </div>
+
+                <!-- WEEKLY REPORT -->
+                <div class="glass-card p-4 mb-4">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-bold text-sm text-slate-700">Báo cáo hàng tuần</h3>
+                    </div>
+                    <div class="glass-card p-4 mt-2 bg-white-100">
+                        <div class="space-y-3">
+                            <!-- Study time -->
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <i class="fas fa-clock text-2xl text-blue-500"></i>
+                                    <span class="text-sm font-medium text-blue-600">Tổng thời gian học</span>
+                                </div>
+                            <span class="text-sm font-bold text-blue-600 bg-blue-100 px-2 py-1 rounded-full">19h20m</span>
+                            </div>
+                            <!-- Total task -->
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <i class="fa-solid fa-circle-check text-2xl text-green-500"></i>
+                                    <span class="text-sm font-medium text-green-600">Công việc đã hoàn thành</span>
+                                </div>
+                            <span class="text-sm font-bold text-green-600 bg-green-100 px-2 py-1 rounded-full">25/28</span>
+                            </div>
+                            <!-- Average Energy -->
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    <i class="fas fa-bolt text-2xl text-yellow-500"></i>
+                                    <span class="text-sm font-medium text-yellow-600">Mức năng lượng trung bình</span>
+                                </div>
+                            <span class="text-sm font-bold text-yellow-600 bg-yellow-100 px-2 py-1 rounded-full">79%</span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="glass-card p-4 mt-2 bg-white-100">
+                    <h3 class="font-bold text-sm text-slate-700 mb-3">Hiệu suất trung bình</h3>
+                    <div class="h-24 flex items-end justify-between gap-1 px-1">
+                        <!-- Bars simulating the chart -->
+                        <div class="w-1/12 bg-blue-400 rounded-t h-[75%]"></div>
+                        <div class="w-1/12 bg-blue-300 rounded-t h-[60%]"></div>
+                        <div class="w-1/12 bg-blue-200 rounded-t h-[45%]"></div>
+                        <div class="w-1/12 bg-blue-500 rounded-t h-[90%] relative group">
+                            <!-- Tooltip -->
+                            <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition whitespace-nowrap">Hiệu suất cao nhất</div>
+                        </div>
+                        <div class="w-1/12 bg-blue-400 rounded-t h-[60%]"></div>
+                        <div class="w-1/12 bg-blue-200 rounded-t h-[40%]"></div>
+                        <div class="w-1/12 bg-blue-300 rounded-t h-[50%]"></div>
+                    </div>
+                    <div class="flex justify-between text-[10px] text-slate-400 mt-1">
+                        <span>Thứ 2</span>
+                        <span>Thứ 3</span>
+                        <span>Thứ 4</span>
+                        <span>Thứ 5</span>
+                        <span>Thứ 6</span>
+                        <span>Thứ 7</span>
+                        <span>Chủ Nhật</span>
+                    </div>
+                </div>
+
                 </div>
 
                 <!-- Mini Leaderboard -->
@@ -236,6 +303,8 @@
                         </div>
                     </div>
                 </div>
+
+                
             </div>
 
             <!-- PAGE: ENERGY -->
