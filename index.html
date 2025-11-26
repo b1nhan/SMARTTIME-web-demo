@@ -313,7 +313,7 @@
 
                     <!-- Controls -->
                     <div class="flex items-center gap-6 mt-8">
-                        <button class="w-12 h-12 rounded-full bg-white text-slate-400 shadow hover:text-red-500 transition flex items-center justify-center">
+                        <button id="reset-btn" onclick="resetTimer()" class="w-12 h-12 rounded-full bg-white text-slate-400 shadow hover:text-red-500 transition flex items-center justify-center">
                             <i class="fas fa-undo"></i>
                         </button>
                         <button id="start-btn" onclick="toggleTimer()" class="w-20 h-20 rounded-full bg-blue-600 text-white shadow-xl shadow-blue-400/40 hover:scale-105 transition flex items-center justify-center text-2xl">
@@ -328,21 +328,27 @@
                 <!-- Todo List -->
                 <div class="glass-card p-4 mb-20">
                     <div class="flex justify-between items-center mb-3">
-                        <h3 class="font-bold text-sm text-slate-700">Tasks hôm nay</h3>
+                        <h3 class="font-bold text-sm text-slate-700">Todo list</h3>
                         <button class="text-blue-500 text-xs"><i class="fas fa-plus"></i> Thêm</button>
                     </div>
                     <div class="space-y-2">
                         <div class="flex items-center p-3 bg-white/60 rounded-lg border border-white/50">
                             <input type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
                             <div class="ml-3 flex-1">
-                                <p class="text-sm font-medium text-slate-700">Ôn lại Cấu trúc dữ liệu</p>
+                                <p class="text-sm font-medium text-slate-700">Ôn lại Cơ sở dữ liệu</p>
                                 <span class="text-[10px] text-orange-500 bg-orange-50 px-1.5 py-0.5 rounded">High Priority</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-3 bg-white/60 rounded-lg border border-white/50">
+                            <input type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
+                            <div class="ml-3 flex-1">
+                                <p class="text-sm font-medium text-slate-700">Lên kế hoạch đi chơi cuối tuần</p>
                             </div>
                         </div>
                         <div class="flex items-center p-3 bg-white/60 rounded-lg border border-white/50 opacity-60">
                             <input type="checkbox" checked class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
                             <div class="ml-3 flex-1">
-                                <p class="text-sm font-medium text-slate-700 line-through">Nộp bài tập Tiếng Anh</p>
+                                <p class="text-sm font-medium text-slate-700 line-through">Chuẩn bị bài thuyết trình Kỹ năng nghề nghiệp</p>
                             </div>
                         </div>
                     </div>
@@ -848,6 +854,22 @@
                     }
                 }, 1000);
             }
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+
+            timeLeft = TOTAL_TIME;
+            
+            updateTimerDisplay();
+
+            const btn = document.getElementById('start-btn');
+            const icon = btn.querySelector('i');
+
+            btn.classList.remove('bg-yellow-500');
+            btn.classList.add('bg-blue-600');
+            icon.className = 'fas fa-play ml-1';
         }
 
         // Chat Toggle
